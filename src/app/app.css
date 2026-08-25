@@ -1,0 +1,120 @@
+/* =========================================================
+   SECTION A — LAYOUT
+   ========================================================= */
+
+.layout {
+  display: flex;
+  min-height: 100vh;
+}
+/* puts the sidebar and the page side by side. */
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 30px;
+  width: 94px;
+  padding: 16px 8px;
+  background: #FFFFFF;
+  border-right: 1px solid #E4E7EC;
+}
+
+.menu {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+  margin-bottom: auto;
+}
+/* margin-bottom:auto pushes the photo down to the bottom. */
+
+.menu-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 36px;
+  padding: 0 12px;                    /* the GAP between the line and the box */
+  border-left: 4px solid transparent; /* the purple line lives here. See-through
+                                         when resting, so nothing moves sideways
+                                         when it lights up. */
+  cursor: pointer;
+}
+/* the see-through left border stops the button shifting
+   sideways when the purple bar appears in .active. */
+
+.content {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+
+/* =========================================================
+   SECTION B — STYLING HOOKS
+   ========================================================= */
+
+.logo {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.my-photo {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+/* ---------- all four sidebar icons at once ---------- */
+.menu-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 44px;
+  border-radius: 8px;   /* the rounded corners of the grey box */
+}
+
+.menu-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.menu-btn:hover { border-left-color: #7B5CF5; }
+/* the purple line. ONLY on hover — there is no .active rule here on
+   purpose, so a button shows nothing until the mouse is over it. */
+
+.menu-btn:hover .menu-icon { background: #F4F4FB; }
+/* the 64 x 44 grey button shape, same rule. */
+
+
+.menu-icon img { width: 20px; height: 20px; object-fit: contain; }
+
+.home-btn      img { width: 15px; height: 16px; }
+.planning-btn  img { width: 15px; height: 16px; }
+.approvals-btn img { width: 15px; height: 16px; }
+.settings-btn  img { width: 15px; height: 16px; }
+
+@media (max-width: 768px) {
+
+  .sidebar { display: none; }
+  /* hidden by default -> .content takes the full width */
+
+  .layout.menu-open .sidebar {
+    display: flex;          /* still the same vertical column as on desktop */
+    position: fixed;        /* lifted OUT of the row, so it covers the page
+                               instead of pushing it sideways */
+    top: 0;
+    left: 0;
+    height: 100vh;          /* full height of the screen */
+    z-index: 100;           /* sits ON TOP of the header and the table */
+    box-shadow: 2px 0 12px rgba(16, 24, 40, 0.12);
+    width:70px;
+
+  }
+  .layout.menu-open .menu-icon { width: 52px; height: 40px; }
+  /* the grey box shrinks with it, or it would not fit in 72px */
+}

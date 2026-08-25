@@ -1,1 +1,286 @@
-/* You can add global styles to this file, and also import other style files */
+@import "primeicons/primeicons.css";
+
+/* =========================================================
+   1. BASICS
+   ========================================================= */
+
+* { box-sizing: border-box; }
+
+html, body { height: 100%; }
+/* needed so the white box can stretch to full screen height. */
+
+body {
+  margin: 0;
+  font-family: "Poppins", sans-serif;
+  font-size: 13px;
+  color: #344054;
+  background: #F1F5F7;
+}
+
+
+/* =========================================================
+   2. SHARED SCREEN PARTS — used by EVERY page
+   ========================================================= */
+
+.content > *:not(router-outlet) {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+/* Angular puts the opened page inside .content as its own tag.
+   That tag has to stretch too, or the white box collapses. */
+
+.screen {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.heading {
+  flex: none;
+  height: 70px;
+  margin: 0 24px;
+  padding: 0 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  background: #FFFFFF;
+  border-radius: 0 0 8px 8px;
+}
+/* the white header bar with the two title lines. */
+
+.small-title {
+  margin: 0;
+  font-family: "Poppins", sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  color: #6B6B6B;
+  line-height: 25px;
+}
+
+.big-title {
+  margin: 0;
+  font-family: "Poppins", sans-serif;
+  font-size: 22px;
+  font-weight: 600;
+  color: #101828;
+  line-height: 30px;
+}
+
+.box {
+  flex: 1;
+  min-height: 0;
+  margin: 16px 24px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 20px 0;
+  background: #FFFFFF;
+  border: 1px solid #E4E7EC;
+  border-radius: 8px;
+}
+/* the big white card. */
+
+.box-empty {
+  align-items: center;
+  justify-content: center;
+  color: #98A2B3;
+}
+/* used by the home / approvals / settings placeholder pages */
+
+
+/* =========================================================
+   3. PRIMENG TABLE
+   <p-table> builds its own <table>, so a component css file
+   cannot reach it. .grid is the styleClass on <p-table>.
+   ========================================================= */
+
+.grid {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.grid .p-datatable-table-container {
+  flex: 1;
+  min-height: 0;
+}
+
+.grid table {
+  width: 100%;
+  height: 100%;
+  min-width: 1000px;
+  table-layout: auto;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+/* width:100% makes the 8 columns share the card. min-width stops
+   them squashing on a narrow screen — .table-box scrolls instead. */
+
+/* ---------- COLUMN WIDTHS — one line per column, in order ---------- */
+.grid .title-row th:nth-child(1) { width: 130px; }   /* Serial No */
+.grid .title-row th:nth-child(2) { width: 290px; }   /* Title     */
+.grid .title-row th:nth-child(3) { width: 150px; }   /* Category  */
+.grid .title-row th:nth-child(4) { width: 160px; }   /* Brand     */
+.grid .title-row th:nth-child(5) { width: 130px; }   /* Price     */
+.grid .title-row th:nth-child(6) { width: 130px; }   /* Discount  */
+.grid .title-row th:nth-child(7) { width: 120px; }   /* Rating    */
+.grid .title-row th:nth-child(8) { width: 120px; }   /* Stock     */
+
+.grid th,
+.grid td {
+  padding: 6px 12px;
+  text-align: left;
+  background: #FFFFFF;
+  border: 0;
+  border-right: 1px dashed #E4E7EC;
+}
+
+.grid th:last-child,
+.grid td:last-child { border-right: 0; }
+
+.grid tr th:first-child,
+.grid tr td:first-child { padding-left: 32px; }
+
+.grid tr th:last-child,
+.grid tr td:last-child  { padding-right: 32px; }
+/* 12 (normal cell padding) + 20 (the pull-out) = 32 */
+
+
+/* ---------- header block ---------- */
+
+.grid .title-row th {
+  font-family: "Poppins", sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+  color: #414141;
+  line-height: 100%;
+  padding-top: 10px;
+  padding-bottom: 5px;
+  white-space: nowrap;
+  border-top: 1px dashed #E4E7EC;
+  background: #F1F5F7;
+}
+
+.grid .search-row th {
+  padding: 0 12px 14px;
+  border-bottom: 1px dashed #E4E7EC;
+  background: #F1F5F7;
+}
+
+
+/* ---------- body rows ---------- */
+
+.grid .row td {
+  height: 28px;
+  padding-top: 2px;
+  padding-bottom: 2px;
+  font-family: "Poppins", sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+  color: #414141;
+  line-height: 20px;
+  white-space: nowrap;
+  border-bottom: 1px dashed #E4E7EC;
+}
+
+.grid tbody tr:first-child td { padding-top: 16px; }
+/* extra breathing room under the header block. Only the FIRST
+   data row gets it, so every other row keeps the same spacing. */
+
+.grid .row:hover td { background: #FBFAFF; }
+
+.grid tfoot { height: 100%; }
+
+.grid .blank-row td {
+  height: 100%;
+  padding: 0;
+  border-bottom: 0;
+}
+/* eats the leftover height so the dashed column lines
+   reach the bottom bar. */
+
+.grid .empty-msg {
+  padding: 24px 32px;
+  color: #98A2B3;
+}
+/* the "No products found." line */
+
+
+/* =========================================================
+   4. PRIMENG DROPDOWN — the items-per-page box
+   PrimeNG builds this, and the open list lives in an overlay on the
+   page body, so both have to be styled from here, not the component.
+   ========================================================= */
+
+/* the closed box */
+.page-dropdown {
+  min-width: 40px;
+  border: 1px solid #6166CF;
+  border-radius: 6px;
+}
+
+/* the value and the arrow inside it */
+.page-dropdown .p-select-label {
+  font-family: "Poppins", sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  color: #6166CF;
+  padding: 5px 8px;
+}
+
+.page-dropdown .p-select-dropdown {
+  width: 24px;
+  color: #6166CF;
+}
+
+/* the open list */
+.p-select-option:hover                    { background: #F4F4FB; }
+.p-select-option.p-select-option-selected { background: #F1EDFF; color: #6166CF; }
+
+
+/* every button: page numbers AND the four arrows */
+.p-paginator .p-paginator-page,
+.p-paginator .p-paginator-first,
+.p-paginator .p-paginator-prev,
+.p-paginator .p-paginator-next,
+.p-paginator .p-paginator-last {
+  min-width: 28px;
+  height: 28px;
+  margin: 0;
+  font-size: 12px;
+  color: #101828;
+  background: none;              /* resting: no fill */
+  border: 1px solid #D9DBF1;     /* light grey outline */
+  border-radius: 6px;
+}
+
+/* hover ONLY the border lightens */
+.p-paginator .p-paginator-page:hover,
+.p-paginator .p-paginator-first:hover,
+.p-paginator .p-paginator-prev:hover,
+.p-paginator .p-paginator-next:hover,
+.p-paginator .p-paginator-last:hover {
+  background: none;
+  border-color: #C7C9EE;
+  color: #101828;
+}
+
+/* the page you clicked — purple outline, still no fill */
+.p-paginator .p-paginator-page.p-paginator-page-selected,
+.p-paginator .p-paginator-page.p-paginator-page-selected:hover {
+  color: #6166CF;
+  font-weight: 500;
+  background: none;
+  border-color: #6166CF;
+}
+
+/* kills the grey ring PrimeNG leaves after a click */
+.p-paginator button:focus,
+.p-paginator button:focus-visible {
+  outline: 0;
+  box-shadow: none;
+}

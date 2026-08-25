@@ -1,0 +1,188 @@
+<div class="screen">
+  <!-- ============ HEADING ============ -->
+  <div class="heading">
+    <div class="heading-text">
+      <p class="small-title">Setting | Sales Order Approvals</p>
+      <div class="heading-row">
+      <h1 class="big-title planning-title">Production Planning Standard</h1>
+
+      <button class="menu-toggle" (click)="layout.toggleMenu()" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+ </div>
+  <!-- ============ WHITE BOX ============ -->
+  <div class="box">
+    <!-- ============ TOP BAR ============ -->
+    <div class="top-bar">
+      <div class="search-box">
+        <input
+          type="text"
+          placeholder="Search here by Plan no"
+          (input)="onSearch($any($event.target).value)"
+        />
+        <i class="pi pi-search"></i>
+      </div>
+
+      <span class="record-count">{{ total }} Records</span>
+
+      <div class="right-buttons">
+        <button class="btn filter-btn">
+          <img class="btn-icon" src="assets/buttons/icon.svg" />
+          <span>Advance Filter</span>
+        </button>
+        <span class="line"></span>
+        <button class="small-btn sort-btn">
+          <img class="btn-icon" src="assets/buttons/arrows.png" />
+        </button>
+        <span class="line"></span>
+        <button class="small-btn columns-btn">
+          <img class="btn-icon" src="assets/buttons/box.png" />
+        </button>
+        <button class="create-img-btn">
+          <img src="assets/buttons/new.svg" alt="Create New" />
+        </button>
+      </div>
+    </div>
+
+    <!-- ============ TABLE ============ -->
+    <div class="table-box">
+      <p-table [value]="products" styleClass="grid">
+        <ng-template pTemplate="header">
+          <tr class="title-row">
+            <th>Serial No</th>
+            <th>Title</th>
+            <th>Category</th>
+            <th>Brand</th>
+            <th>Price</th>
+            <th>Discount</th>
+            <th>Rating</th>
+            <th>Stock</th>
+          </tr>
+          <!-- one box per column. Second argument = which field it searches. -->
+          <tr class="search-row">
+            <th>
+              <input
+                class="search-input"
+                placeholder="Search No"
+                (input)="search($any($event.target).value, 'id')"
+              />
+            </th>
+            <th>
+              <input
+                class="search-input"
+                placeholder="Search Title"
+                (input)="search($any($event.target).value, 'title')"
+              />
+            </th>
+            <th>
+              <input
+                class="search-input"
+                placeholder="Search Category"
+                (input)="search($any($event.target).value, 'category')"
+              />
+            </th>
+            <th>
+              <input
+                class="search-input"
+                placeholder="Search Brand"
+                (input)="search($any($event.target).value, 'brand')"
+              />
+            </th>
+            <th>
+              <input
+                class="search-input"
+                placeholder="Search Price"
+                (input)="search($any($event.target).value, 'price')"
+              />
+            </th>
+            <th>
+              <input
+                class="search-input"
+                placeholder="Search Discount"
+                (input)="search($any($event.target).value, 'discountPercentage')"
+              />
+            </th>
+            <th>
+              <input
+                class="search-input"
+                placeholder="Search Rating"
+                (input)="search($any($event.target).value, 'rating')"
+              />
+            </th>
+            <th>
+              <input
+                class="search-input"
+                placeholder="Search Stock"
+                (input)="search($any($event.target).value, 'stock')"
+              />
+            </th>
+          </tr>
+        </ng-template>
+
+        <ng-template pTemplate="body" let-p>
+          <tr class="row">
+            <td>{{ p.id }}</td>
+            <td>{{ p.title }}</td>
+            <td>{{ p.category }}</td>
+            <td>{{ p.brand || '—' }}</td>
+            <td>{{ p.price | currency: 'USD' }}</td>
+            <td>{{ p.discountPercentage }}%</td>
+            <td>{{ p.rating }}</td>
+            <td>{{ p.stock }}</td>
+          </tr>
+        </ng-template>
+
+        <!-- blank row so the column lines reach the bottom -->
+        <ng-template pTemplate="footer">
+          <tr class="blank-row">
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+        </ng-template>
+
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td colspan="8" class="empty-msg">No products found.</td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+
+    <!-- ============ BOTTOM BAR ============
+         p-paginator draws the page buttons AND the rows-per-page
+         dropdown. onPageChange gives us first + rows. -->
+    <div class="bottom-bar">
+      <!-- which rows you are looking at -->
+      <span class="range-text">{{ rangeText }}</span>
+
+      <!-- page numbers and arrows only — no dropdown of its own -->
+      <p-paginator
+        [first]="first"
+        [rows]="rows"
+        [totalRecords]="total"
+        (onPageChange)="onPageChange($event)"
+      />
+
+      <!-- your own items-per-page dropdown -->
+      <div class="per-page">
+        <p-select
+          styleClass="page-dropdown"
+          [options]="dropdownOptions"
+          [(ngModel)]="selectedValue"
+          optionLabel="label"
+          optionValue="value"
+          (onChange)="changeSize($event.value)"
+        />
+        <span class="per-page-text">Items per page</span>
+      </div>
+    </div>
+  </div>
+</div>

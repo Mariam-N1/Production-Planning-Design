@@ -1,0 +1,338 @@
+
+/* ---------- the heading bar: title left, room on the right ---------- */
+.heading {
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.heading-text {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.heading-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+/* the two lines of the title stay stacked inside the row */
+
+
+/* ---------- the row with search + buttons ---------- */
+.top-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* ---------- "Search here by Plan no" field ----------*/
+  
+.search-box {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  max-width: 368px;
+  margin-left: 32px;   
+    
+  height: 36px;
+  padding: 8px 12px;
+  border: 1px solid #E4E7EC;
+  border-radius: 4px;
+}
+
+.search-box input {
+  flex: 1;
+  min-width: 0;
+  font-family: "Poppins", sans-serif;
+  font-size: 11px;
+  color: #101828;
+  background: none;
+  border: 0;
+  outline: none;
+}
+
+.search-box input::placeholder { color: #9C9C9C; }
+.search-box i { color: #9C9C9C; font-size: 11px; }
+
+
+/* ---------- the group of buttons on the right ---------- */
+  
+.right-buttons {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-left: auto;
+  margin-right: 32px;
+}
+
+
+/* ---------- the thin grey divider ---------- */
+.line {
+  width: 1px;
+  height: 24px;
+  align-self: center;
+  background: #E4E7EC;
+  flex: none;
+}
+
+
+/* ---------- shared shape of a text button ---------- */
+.btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+
+
+/* ---------- shared shape of an icon-only button ---------- */
+.small-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+
+
+/* ---------- the picture inside any top-bar button ----------*/
+   
+.btn-icon {
+  width: 16px;
+  height: 16px;
+  object-fit: contain;
+  flex: none;
+}
+
+
+/* ==================== TABLE ==================== */
+
+/* ---------- the div wrapped around <p-table> ----------*/
+   
+.table-box {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+}
+
+
+/* ---------- the "Search here" boxes under each column ----------
+   Only a bottom border, so it reads as a line, not a box. */
+.search-input {
+  width: 100%;
+  padding: 4px 0;
+  font-family: "Poppins", sans-serif;
+  font-size: 12px;
+  color: #101828;
+  background: none;
+  border: 0;
+  border-bottom: 1px solid #E4E7EC;
+  outline: none;
+}
+
+.search-input::placeholder { color: #919292; font-size: 13px; font-weight: 400; }
+.search-input:focus { border-bottom-color: #7B5CF5; }
+
+
+/* ==================== BOTTOM BAR ==================== */
+
+/* one child for now (the dropdown). margin-left:auto on .per-page
+   is what pushes it to the right. */
+.bottom-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+
+/* =========================================================
+   SECTION B — STYLING HOOKS
+   One block per element. Change fonts, colours and sizes
+   here. Nothing in this section affects layout.
+   ========================================================= */
+
+
+/* ---------- 1. "Production Planning Standard" ----------*/
+   
+.planning-title {
+  font-family: "Poppins", sans-serif;
+  font-size: 20px;
+  font-weight: 500;
+  color: #1E1E1E;
+  line-height: 20.72px;
+  letter-spacing: 0;
+}
+
+
+/* ---------- 2. "194 Records" ----------
+   The text right after the search box. */
+.record-count {
+  font-family: "Poppins", sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+  color: #414141;
+  line-height: 20px;
+}
+
+
+/* ---------- 3a. "Advance Filter" button ---------- */
+.filter-btn {
+  font-family: "Poppins", sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  color: #989898;
+  height: 18px;
+  padding: 5px 10px;
+  gap: 8px;                      /* space between icon and text */
+  background: none;
+  border: 0;
+  border-radius: 6px;
+}
+.filter-btn .btn-icon { width: auto; max-width: none; height: 19px; }
+
+/* no colour on hover — the text keeps its grey and only gets an
+   underline. */
+.filter-btn:hover { background: none; color: #989898; text-decoration: underline; }
+
+
+/* ---------- 3b. the sort button (up/down arrows) ---------- */
+.sort-btn {
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  color: #A9A9A9;
+  background: none;
+  border: 0;
+  border-radius: 6px;
+}
+.sort-btn .btn-icon { width: 13px; height: 15px; }
+.sort-btn:hover { background: #F1EDFF; color: #7B5CF5; }
+
+
+/* ---------- 3c. the columns button (next to sort) ---------- */
+.columns-btn {
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  color: #A9A9A9;
+  background: none;
+  border: 0;
+  border-radius: 6px;
+}
+.columns-btn .btn-icon { width: 18px; height: 18px; }
+.columns-btn:hover { background: #F1EDFF; color: #7B5CF5; }
+
+
+/* ---------- 4. Create New (the whole button is one SVG) ---------- */
+.create-img-btn {
+  padding: 0;
+  background: none;
+  border: 0;
+  cursor: pointer;
+  line-height: 0;
+}
+/* no background, padding or border — the picture provides all of it. */
+
+.create-img-btn img {
+  height: auto;
+  width: auto;
+  display: block;
+}
+
+
+/* ---------- 5a. "Items per page" (bottom right) ---------- */
+.per-page-text {
+  font-family: "Poppins", sans-serif;
+  white-space: nowrap;
+  font-size: 13px;
+  font-weight: 400;
+  color: #101828;
+  line-height: 20px;
+}
+
+
+/* ---------- 5b. the bottom-right group ----------
+   margin-left:auto pushes it right; margin-right lines it up with
+   the buttons above (same 32px). */
+.per-page {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+  margin-right: 32px;
+}
+
+
+/* ---------- 6. the message when a request fails ---------- */
+.load-error {
+  margin: 0 32px;
+  font-family: "Poppins", sans-serif;
+  font-size: 13px;
+  color: #B42318;
+}
+/* text | paginator | dropdown.*/
+   
+.bottom-bar {
+  display: flex;
+  align-items: center;
+  margin: 0 32px;
+}
+
+.range-text { 
+  flex: 1;
+ }                 /* left  text */
+
+.per-page {
+  flex: 1;                               /* right — takes the other half */
+  justify-content: flex-end;             
+}
+
+.menu-toggle {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 3px;
+  width: 30px;
+  height: 30px;
+  background: none;
+  border: 1px solid #D9DBF1;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.menu-toggle span {
+  display: block;
+  width: 100%;
+  height: 2px;
+  background:#6166CF ;
+  border-radius: 2px;
+}
+/* =========================================================
+   SECTION C — SMALL SCREENS
+   ========================================================= */
+
+@media (max-width: 768px) {
+
+  .top-bar { flex-wrap: wrap; row-gap: 12px; }
+
+  .search-box { margin-left: 20px; }
+   
+.menu-toggle { display: flex;}
+  .right-buttons {
+    width: 100%;
+    margin-left: 0;
+  
+    justify-content: flex-end;
+  }
+
+  .bottom-bar { flex-wrap: wrap; row-gap: 12px; }
+  .per-page   { margin-right: 20px; }
+}
