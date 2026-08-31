@@ -3,7 +3,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { FormsModule } from '@angular/forms';
 
-
 // ---- PrimeNG theme ----
 import Aura from '@primeuix/themes/aura';
 import { definePreset } from '@primeuix/themes';
@@ -33,7 +32,11 @@ const MyTheme = definePreset(Aura, {
 // ---- PrimeNG components ----
 import { TableModule } from 'primeng/table';    // <p-table>
 import { SelectModule } from 'primeng/select';  // <p-select>
-import { PaginatorModule } from 'primeng/paginator';  
+import { PaginatorModule } from 'primeng/paginator'; // <p-paginator>
+import { DialogModule } from 'primeng/dialog';       // <p-dialog>
+import { MenuModule } from 'primeng/menu';           // <p-menu>
+import { PopoverModule } from 'primeng/popover';     // <p-popover>
+
 // ---- my files ----
 import { AppRoutingModule } from './app-routing-module';
 import { App } from './app';
@@ -56,7 +59,10 @@ import { SettingsComponent } from './pages/settings/settings.component';
     FormsModule,      // needed for [(ngModel)] on the dropdown
     TableModule,
     SelectModule,
-    PaginatorModule, 
+    PaginatorModule,
+    DialogModule,
+    MenuModule,
+    PopoverModule,
   ],
   providers: [
     provideAnimationsAsync(),

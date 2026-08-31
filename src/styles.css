@@ -112,7 +112,6 @@ body {
 .grid table {
   width: 100%;
   height: 100%;
-  min-width: 1000px;
   table-layout: auto;
   border-collapse: separate;
   border-spacing: 0;
@@ -120,15 +119,8 @@ body {
 /* width:100% makes the 8 columns share the card. min-width stops
    them squashing on a narrow screen — .table-box scrolls instead. */
 
-/* ---------- COLUMN WIDTHS — one line per column, in order ---------- */
-.grid .title-row th:nth-child(1) { width: 130px; }   /* Serial No */
-.grid .title-row th:nth-child(2) { width: 290px; }   /* Title     */
-.grid .title-row th:nth-child(3) { width: 150px; }   /* Category  */
-.grid .title-row th:nth-child(4) { width: 160px; }   /* Brand     */
-.grid .title-row th:nth-child(5) { width: 130px; }   /* Price     */
-.grid .title-row th:nth-child(6) { width: 130px; }   /* Discount  */
-.grid .title-row th:nth-child(7) { width: 120px; }   /* Rating    */
-.grid .title-row th:nth-child(8) { width: 120px; }   /* Stock     */
+/* COLUMN WIDTHS now come from the columns array in the TS
+   ([style.width] on each <th>), so hiding a column cannot shift them. */
 
 .grid th,
 .grid td {
@@ -237,10 +229,38 @@ body {
   color: #6166CF;
 }
 
+/* the category box in the top bar — same look, just wider */
+.cat-dropdown {
+  min-width: 150px;
+  border: 1px solid #E4E7EC;
+  border-radius: 4px;
+}
+
+.cat-dropdown .p-select-label {
+  font-family: "Poppins", sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  color: #414141;
+  padding: 8px 12px;
+}
+
+.cat-dropdown .p-select-dropdown { width: 28px; color: #9C9C9C; }
+
 /* the open list */
 .p-select-option:hover                    { background: #F4F4FB; }
 .p-select-option.p-select-option-selected { background: #F1EDFF; color: #6166CF; }
 
+
+/* =========================================================
+   5. PRIMENG PAGINATOR — page buttons + rows-per-page dropdown
+   PrimeNG builds all of this, so it is styled from here.
+   ========================================================= */
+
+.p-paginator {
+  padding: 0;
+  background: none;
+  gap: 8px;                 /* space between the buttons */
+}
 
 /* every button: page numbers AND the four arrows */
 .p-paginator .p-paginator-page,
@@ -251,14 +271,16 @@ body {
   min-width: 28px;
   height: 28px;
   margin: 0;
+  font-family: "Poppins", sans-serif;
   font-size: 12px;
   color: #101828;
-  background: none;              /* resting: no fill */
-  border: 1px solid #D9DBF1;     /* light grey outline */
+  background: none;
+  border: 1px solid #D9DBF1;
   border-radius: 6px;
 }
 
-/* hover ONLY the border lightens */
+/* hover — ONLY the border lightens. background stays none, so the
+   button never fills in. */
 .p-paginator .p-paginator-page:hover,
 .p-paginator .p-paginator-first:hover,
 .p-paginator .p-paginator-prev:hover,
@@ -269,7 +291,7 @@ body {
   color: #101828;
 }
 
-/* the page you clicked — purple outline, still no fill */
+/* the page you are on — purple outline, still no fill */
 .p-paginator .p-paginator-page.p-paginator-page-selected,
 .p-paginator .p-paginator-page.p-paginator-page-selected:hover {
   color: #6166CF;
@@ -284,3 +306,101 @@ body {
   outline: 0;
   box-shadow: none;
 }
+
+/* an arrow that cannot go any further */
+.p-paginator .p-disabled { opacity: 0.45; }
+
+/* the rows-per-page dropdown, same look as the rest */
+.p-paginator .p-select {
+  min-width: 40px;
+  background: none;
+  border: 1px solid #6166CF;
+  border-radius: 6px;
+}
+
+.p-paginator .p-select-label {
+  font-family: "Poppins", sans-serif;
+  font-size: 12px;
+  color: #6166CF;
+  padding: 5px 8px;
+}
+
+.p-paginator .p-select-dropdown {
+  width: 24px;
+  color: #6166CF;
+}
+
+
+/* =========================================================
+   6. PRIMENG DIALOG — the Create New window
+   PrimeNG builds the window, the title bar and the grey sheet
+   behind it, so all three are styled from here.
+   ========================================================= */
+
+.new-dialog {
+  width: 560px;
+  max-width: 90vw;        /* on a phone: 90% of the screen width */
+  border-radius: 8px;
+}
+
+/* the title bar */
+.new-dialog .p-dialog-header {
+  padding: 20px 24px 16px;
+  font-family: "Poppins", sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  color: #101828;
+  border-bottom: 1px solid #E4E7EC;
+}
+
+/* the middle, where the boxes go */
+.new-dialog .p-dialog-content { padding: 20px 24px 24px; }
+
+/* the strip with Cancel and Save */
+.new-dialog .p-dialog-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  padding: 16px 24px;
+  border-top: 1px solid #E4E7EC;
+}
+
+/* the "are you sure?" window is smaller — it only holds one line */
+.ask-dialog { width: 420px; }
+
+/* the grey sheet behind the window */
+.p-dialog-mask { background: rgba(16, 24, 40, 0.45); }
+
+
+/* =========================================================
+   7. PRIMENG MENU — the little Edit / Delete list on a row
+   appendTo="body" puts it on the page body, so it is styled
+   from here and never clipped by the scrolling table.
+   ========================================================= */
+
+.p-menu {
+  padding: 4px;
+  border: 1px solid #E4E7EC;
+  border-radius: 6px;
+}
+
+.p-menu .p-menu-item-link {
+  gap: 8px;
+  padding: 8px 12px;
+  font-family: "Poppins", sans-serif;
+  font-size: 13px;
+  color: #414141;
+  border-radius: 4px;
+}
+
+.p-menu .p-menu-item-link:hover { background: #F1EDFF; color: #6166CF; }
+.p-menu .p-menu-item-icon { font-size: 13px; }
+
+
+/* =========================================================
+   8. PRIMENG POPOVER — the Field Chooser panel
+   ========================================================= */
+
+.fields-panel { border: 1px solid #E4E7EC; border-radius: 8px; }
+
+.fields-panel .p-popover-content { padding: 8px; }

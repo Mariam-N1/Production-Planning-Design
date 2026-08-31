@@ -1,188 +1,255 @@
 <div class="screen">
+
   <!-- ============ HEADING ============ -->
   <div class="heading">
     <div class="heading-text">
       <p class="small-title">Setting | Sales Order Approvals</p>
-      <div class="heading-row">
-      <h1 class="big-title planning-title">Production Planning Standard</h1>
 
-      <button class="menu-toggle" (click)="layout.toggleMenu()" aria-label="Menu">
-        <span></span><span></span><span></span>
-      </button>
+      <!-- title and button on ONE row, so the button lines up with
+           the title by itself — no margin numbers to guess. -->
+      <div class="heading-row">
+        <h1 class="big-title planning-title">Production Planning Standard</h1>
+
+        <!-- 3-line button. Hidden above 768px. Opens the sidebar. -->
+        <button class="menu-toggle" (click)="layout.toggleMenu()" aria-label="Menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
     </div>
   </div>
- </div>
+
   <!-- ============ WHITE BOX ============ -->
   <div class="box">
+
     <!-- ============ TOP BAR ============ -->
     <div class="top-bar">
+
       <div class="search-box">
-        <input
-          type="text"
-          placeholder="Search here by Plan no"
-          (input)="onSearch($any($event.target).value)"
-        />
+        <input type="text" placeholder="Search here by Plan no"
+               (input)="onSearch($any($event.target).value)">
         <i class="pi pi-search"></i>
       </div>
 
       <span class="record-count">{{ total }} Records</span>
 
       <div class="right-buttons">
-        <button class="btn filter-btn">
-          <img class="btn-icon" src="assets/buttons/icon.svg" />
+        <button class="btn filter-btn" (click)="toggleSearch()">
+          <img class="btn-icon" src="assets/buttons/icon.svg">
           <span>Advance Filter</span>
         </button>
         <span class="line"></span>
-        <button class="small-btn sort-btn">
-          <img class="btn-icon" src="assets/buttons/arrows.png" />
+        <!-- click = open the little sort list -->
+        <button class="small-btn sort-btn" (click)="sortPanel.toggle($event)">
+          <img class="btn-icon" src="assets/buttons/arrows.png">
         </button>
+
+        <!-- SORT LIST. The one in use is highlighted purple. -->
+        <p-popover #sortPanel styleClass="fields-panel">
+          <div class="fields-list">
+            <button class="field-line sort-line" *ngFor="let o of sortOptions"
+                    [class.active]="sortOrder === o.value"
+                    (click)="chooseSort(o.value); sortPanel.hide()">
+              {{ o.label }}
+            </button>
+          </div>
+        </p-popover>
         <span class="line"></span>
-        <button class="small-btn columns-btn">
-          <img class="btn-icon" src="assets/buttons/box.png" />
+        <button class="small-btn columns-btn" (click)="fields.toggle($event)">
+          <img class="btn-icon" src="assets/buttons/box.png">
         </button>
-        <button class="create-img-btn">
-          <img src="assets/buttons/new.svg" alt="Create New" />
-        </button>
+
+        <!-- FIELD CHOOSER. One checkbox per line in the columns array,
+             so a new column appears here on its own. -->
+        <p-popover #fields styleClass="fields-panel">
+          <div class="fields-list">
+            <label class="field-line" *ngFor="let col of columns">
+              <input type="checkbox" [(ngModel)]="col.visible" (ngModelChange)="toggleColumn(col)">
+              <span>{{ col.header }}</span>
+            </label>
+          </div>
+
+          <div class="fields-foot">
+            <button class="fields-btn" (click)="resetColumns()">Reset</button>
+            <button class="fields-btn" (click)="selectAll()">Select All</button>
+          </div>
+        </p-popover>
+        <button class="create-img-btn" (click)="openDialog()"><img src="assets/buttons/new.svg" alt="Create New"></button>
       </div>
+
     </div>
 
     <!-- ============ TABLE ============ -->
     <div class="table-box">
       <p-table [value]="products" styleClass="grid">
+
         <ng-template pTemplate="header">
+          <!-- one <th> per TICKED column, straight from the array -->
           <tr class="title-row">
-            <th>Serial No</th>
-            <th>Title</th>
-            <th>Category</th>
-            <th>Brand</th>
-            <th>Price</th>
-            <th>Discount</th>
-            <th>Rating</th>
-            <th>Stock</th>
+            <th *ngFor="let col of shownColumns" [style.width]="col.width">{{ col.header }}</th>
           </tr>
-          <!-- one box per column. Second argument = which field it searches. -->
-          <tr class="search-row">
-            <th>
-              <input
-                class="search-input"
-                placeholder="Search No"
-                (input)="search($any($event.target).value, 'id')"
-              />
-            </th>
-            <th>
-              <input
-                class="search-input"
-                placeholder="Search Title"
-                (input)="search($any($event.target).value, 'title')"
-              />
-            </th>
-            <th>
-              <input
-                class="search-input"
-                placeholder="Search Category"
-                (input)="search($any($event.target).value, 'category')"
-              />
-            </th>
-            <th>
-              <input
-                class="search-input"
-                placeholder="Search Brand"
-                (input)="search($any($event.target).value, 'brand')"
-              />
-            </th>
-            <th>
-              <input
-                class="search-input"
-                placeholder="Search Price"
-                (input)="search($any($event.target).value, 'price')"
-              />
-            </th>
-            <th>
-              <input
-                class="search-input"
-                placeholder="Search Discount"
-                (input)="search($any($event.target).value, 'discountPercentage')"
-              />
-            </th>
-            <th>
-              <input
-                class="search-input"
-                placeholder="Search Rating"
-                (input)="search($any($event.target).value, 'rating')"
-              />
-            </th>
-            <th>
-              <input
-                class="search-input"
-                placeholder="Search Stock"
-                (input)="search($any($event.target).value, 'stock')"
-              />
+          <!-- one box per column. Second argument = which field it searches.
+               hide-row is added when Advance Filter is off — ONE class on
+               the row hides all 8 boxes at once. -->
+          <tr class="search-row" [class.hide-row]="!showSearch">
+            <th *ngFor="let col of shownColumns">
+              <input class="search-input" [placeholder]="col.holder"
+                     (input)="search($any($event.target).value, col.field)">
             </th>
           </tr>
         </ng-template>
 
         <ng-template pTemplate="body" let-p>
+          <!-- the click is on each CELL, not on the <tr>.
+               The last cell (stock + dots) deliberately has none, so the
+               dots can never open the edit dialog. -->
           <tr class="row">
-            <td>{{ p.id }}</td>
-            <td>{{ p.title }}</td>
-            <td>{{ p.category }}</td>
-            <td>{{ p.brand || '—' }}</td>
-            <td>{{ p.price | currency: 'USD' }}</td>
-            <td>{{ p.discountPercentage }}%</td>
-            <td>{{ p.rating }}</td>
-            <td>{{ p.stock }}</td>
+            <td *ngFor="let col of shownColumns" (click)="col.field === lastField ? null : openEdit(p.id)">
+
+              <!-- the LAST visible column also holds the 3 dots -->
+              <div class="stock-cell" *ngIf="col.field === lastField; else plainCell">
+                <span>{{ cellText(p, col) }}</span>
+
+                <p-menu #menu [model]="menuItems" [popup]="true" appendTo="body" />
+
+                <button class="dots-btn" (click)="openMenu(p, menu, $event)" aria-label="Menu">
+                  <i class="pi pi-ellipsis-v"></i>
+                </button>
+              </div>
+
+              <ng-template #plainCell>{{ cellText(p, col) }}</ng-template>
+            </td>
           </tr>
         </ng-template>
 
         <!-- blank row so the column lines reach the bottom -->
         <ng-template pTemplate="footer">
           <tr class="blank-row">
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
+            <td *ngFor="let col of shownColumns"></td>
           </tr>
         </ng-template>
 
         <ng-template pTemplate="emptymessage">
           <tr>
-            <td colspan="8" class="empty-msg">No products found.</td>
+            <td [attr.colspan]="colCount" class="empty-msg">No products found.</td>
           </tr>
         </ng-template>
+
       </p-table>
     </div>
 
-    <!-- ============ BOTTOM BAR ============
-         p-paginator draws the page buttons AND the rows-per-page
-         dropdown. onPageChange gives us first + rows. -->
+    <!-- ============ BOTTOM BAR ============ -->
     <div class="bottom-bar">
-      <!-- which rows you are looking at -->
       <span class="range-text">{{ rangeText }}</span>
 
-      <!-- page numbers and arrows only — no dropdown of its own -->
       <p-paginator
         [first]="first"
         [rows]="rows"
         [totalRecords]="total"
-        (onPageChange)="onPageChange($event)"
-      />
+        (onPageChange)="onPageChange($event)" />
 
-      <!-- your own items-per-page dropdown -->
+      <!-- how many rows to show at once -->
       <div class="per-page">
-        <p-select
-          styleClass="page-dropdown"
-          [options]="dropdownOptions"
-          [(ngModel)]="selectedValue"
-          optionLabel="label"
-          optionValue="value"
-          (onChange)="changeSize($event.value)"
-        />
-        <span class="per-page-text">Items per page</span>
+        <p-select styleClass="page-dropdown"
+                  [options]="dropdownOptions"
+                  [(ngModel)]="selectedValue"
+                  optionLabel="label"
+                  optionValue="value"
+                  (onChange)="changeSize($event.value)" />
+        <span class="per-page-text">Rows visible</span>
       </div>
     </div>
+
   </div>
+
+
+
+
+
+  <!-- ============ CREATE NEW DIALOG ============
+       p-dialog centres itself, so there is no position CSS anywhere.
+       [(visible)] is what opens and closes it. -->
+  <p-dialog [header]="editId ? 'Edit Product' : 'Create New Product'"
+            [(visible)]="showDialog"
+            [modal]="true"
+            [draggable]="false"
+            [resizable]="false"
+            styleClass="new-dialog">
+
+    <div class="form">
+
+      <!-- full width, because a title is long -->
+      <div class="field wide">
+        <label>Title</label>
+        <!-- typing clears the red line, so it can never sit there stale -->
+        <input class="field-input" [(ngModel)]="newProduct.title"
+               (input)="formError = ''" placeholder="Product name">
+      </div>
+
+      <div class="field">
+        <label>Category</label>
+        <input class="field-input" [(ngModel)]="newProduct.category" placeholder="beauty">
+      </div>
+
+      <div class="field">
+        <label>Brand</label>
+        <input class="field-input" [(ngModel)]="newProduct.brand" placeholder="Brand name">
+      </div>
+
+      <div class="field">
+        <label>Price</label>
+        <input class="field-input" type="number" [(ngModel)]="newProduct.price" placeholder="0">
+      </div>
+
+      <div class="field">
+        <label>Discount %</label>
+        <input class="field-input" type="number" [(ngModel)]="newProduct.discountPercentage" placeholder="0">
+      </div>
+
+      <div class="field">
+        <label>Rating</label>
+        <input class="field-input" type="number" [(ngModel)]="newProduct.rating" placeholder="0">
+      </div>
+
+      <div class="field">
+        <label>Stock</label>
+        <input class="field-input" type="number" [(ngModel)]="newProduct.stock" placeholder="0">
+      </div>
+
+      <!-- only shows when something is wrong -->
+      <p class="form-error wide" *ngIf="formError">{{ formError }}</p>
+
+    </div>
+
+    <ng-template pTemplate="footer">
+      <button class="dialog-btn cancel-btn" (click)="cancelDialog()">Cancel</button>
+      <button class="dialog-btn save-btn" (click)="saveProduct()" [disabled]="saving">
+        {{ saving ? 'Saving...' : 'Save' }}
+      </button>
+    </ng-template>
+
+  </p-dialog>
+
+
+
+
+  <!-- ============ ARE YOU SURE? ============
+       same window as the form, just a question and two buttons. -->
+  <p-dialog header="Delete product?"
+            [(visible)]="showConfirm"
+            [modal]="true"
+            [draggable]="false"
+            [resizable]="false"
+            styleClass="new-dialog ask-dialog">
+
+    <p class="ask-text" *ngIf="toDelete">
+      "{{ toDelete.title }}" will be removed from the list. This cannot be undone.
+    </p>
+
+    <ng-template pTemplate="footer">
+      <button class="dialog-btn cancel-btn" (click)="showConfirm = false">Cancel</button>
+      <button class="dialog-btn del-btn" (click)="confirmDelete()">Delete</button>
+    </ng-template>
+
+  </p-dialog>
+
 </div>

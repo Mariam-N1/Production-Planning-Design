@@ -1,3 +1,9 @@
+/* =========================================================
+   SECTION A — LAYOUT
+   Position, size and spacing only. Change how things LOOK
+   in SECTION B at the bottom instead.
+   ========================================================= */
+
 
 /* ---------- the heading bar: title left, room on the right ---------- */
 .heading {
@@ -7,18 +13,51 @@
 }
 
 .heading-text {
-  flex: 1;
+  flex: 1;                 /* fills the width, so the button can go right */
   display: flex;
   flex-direction: column;
   gap: 6px;
 }
 
+/* the big title and the 3-line button, side by side.
+   NOT called title-row — the table header already uses that name. */
 .heading-row {
   display: flex;
-  align-items: center;
+  align-items: center;             /* THIS is what levels them */
   justify-content: space-between;
 }
 /* the two lines of the title stay stacked inside the row */
+
+
+/* ---------- the 3-line button ----------
+   display:none here means it never shows on a big screen.
+   The media query at the bottom turns it on. */
+.menu-toggle {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 3px;               /* space BETWEEN the 3 lines */
+  width: 32px;            /* button size */
+  height: 32px;
+  padding: 0 8px;         /* sets how LONG the lines are */
+  background: none;
+  border: 1px solid #D9DBF1;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.menu-toggle:hover {
+  background: #F4F4FB;
+  border-color: #6166CF;
+}
+
+.menu-toggle span {
+  display: block;
+  width: 100%;
+  height: 1.5px;          /* how THICK each line is */
+  background: #101828;
+  border-radius: 2px;
+}
 
 
 /* ---------- the row with search + buttons ---------- */
@@ -28,16 +67,18 @@
   gap: 12px;
 }
 
-/* ---------- "Search here by Plan no" field ----------*/
-  
+
+/* ---------- "Search here by Plan no" field ----------
+   The border is on this div, not the input, so the magnifier
+   sits inside the same box. */
 .search-box {
   display: flex;
   align-items: center;
   gap: 8px;
   flex: 1;
   max-width: 368px;
-  margin-left: 32px;   
-    
+  margin-left: 32px;   /* must MATCH .right-buttons margin-right, so the
+                          gap on the left equals the gap on the right. */
   height: 36px;
   padding: 8px 12px;
   border: 1px solid #E4E7EC;
@@ -59,12 +100,16 @@
 .search-box i { color: #9C9C9C; font-size: 11px; }
 
 
-/* ---------- the group of buttons on the right ---------- */
-  
+/* ---------- the group of buttons on the right ----------
+   margin-left:auto pushes the whole group to the far right,
+   margin-right pulls it back in from the edge. Keep them as
+   two separate lines — a `margin:` shorthand wipes the auto. */
 .right-buttons {
-  display: flex;
+  display: flex;              /* WITHOUT this the buttons stack vertically,
+                                 because .btn / .small-btn are display:flex
+                                 and become full-width blocks. */
   align-items: center;
-  gap: 4px;
+  gap: 12px;                  /* space between the buttons */
   margin-left: auto;
   margin-right: 32px;
 }
@@ -102,8 +147,9 @@
 }
 
 
-/* ---------- the picture inside any top-bar button ----------*/
-   
+/* ---------- the picture inside any top-bar button ----------
+   Without it, each PNG renders at its full exported size and
+   blows the button apart. Each button overrides it below. */
 .btn-icon {
   width: 16px;
   height: 16px;
@@ -114,13 +160,108 @@
 
 /* ==================== TABLE ==================== */
 
-/* ---------- the div wrapped around <p-table> ----------*/
-   
+/* ---------- the div wrapped around <p-table> ----------
+   flex:1 fills the leftover height of the white box.
+   overflow:auto lets the table scroll sideways. */
 .table-box {
   flex: 1;
   min-height: 0;
   overflow: auto;
 }
+
+
+/* the whole row is clickable — it opens the edit form */
+.table-box .row { cursor: pointer; }
+
+
+/* stock on the left, the 3 dots pushed to the right of the SAME cell */
+.stock-cell {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+
+/* the 3-dots button inside the stock cell */
+.dots-btn {
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  color: #98A2B3;
+  background: none;
+  border: 0;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.dots-btn:hover { background: #F1EDFF; color: #6166CF; }
+
+
+/* ---------- the Field Chooser list ---------- */
+.fields-list {
+  display: flex;
+  flex-direction: column;
+  min-width: 180px;
+}
+
+/* one tick + one name */
+.field-line {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 10px;
+  font-family: "Poppins", sans-serif;
+  font-size: 13px;
+  color: #414141;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.field-line:hover { background: #F4F4FB; }
+
+/* the sort list uses buttons, not checkboxes */
+.sort-line {
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: 0;
+}
+
+/* the choice in use — purple, same as everywhere else */
+.field-line.active {
+  background: #F1EDFF;
+  color: #6166CF;
+  font-weight: 500;
+}
+
+.field-line input { accent-color: #6166CF; cursor: pointer; }
+
+/* the Reset / Select All strip */
+.fields-foot {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 6px;
+  padding-top: 8px;
+  border-top: 1px solid #E4E7EC;
+}
+
+.fields-btn {
+  font-family: "Poppins", sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  color: #6166CF;
+  padding: 4px 6px;
+  background: none;
+  border: 0;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.fields-btn:hover { background: #F1EDFF; }
+
+
+/* hides a whole table row in one go. Put it on the <tr>, never on
+   each <td> — one class, one place. */
+.hide-row { display: none; }
 
 
 /* ---------- the "Search here" boxes under each column ----------
@@ -143,13 +284,26 @@
 
 /* ==================== BOTTOM BAR ==================== */
 
-/* one child for now (the dropdown). margin-left:auto on .per-page
-   is what pushes it to the right. */
+/* text | paginator | dropdown.
+   flex:1 on the two OUTER items makes them share the leftover space
+   equally, which pins the paginator to the middle. The paginator
+   itself gets no flex, so it stays its natural width. */
 .bottom-bar {
   display: flex;
   align-items: center;
-  gap: 12px;
+  margin: 0 32px;
 }
+
+.range-text { flex: 1; }                 /* left  — takes half the slack */
+
+.per-page {
+  flex: 1;                               /* right — takes the other half */
+  justify-content: flex-end;             /* and hugs the right edge */
+  gap: 8px;                              /* space between box and words */
+}
+
+/* the dropdown must not be squashed by the text beside it */
+.per-page .page-dropdown { flex: none; }
 
 
 /* =========================================================
@@ -159,8 +313,10 @@
    ========================================================= */
 
 
-/* ---------- 1. "Production Planning Standard" ----------*/
-   
+/* ---------- 1. "Production Planning Standard" ----------
+   The big heading at the very top of the page.
+   (.big-title in styles.css is the shared default for all
+   pages; .planning-title overrides it for THIS page only.) */
 .planning-title {
   font-family: "Poppins", sans-serif;
   font-size: 20px;
@@ -248,10 +404,9 @@
 }
 
 
-/* ---------- 5a. "Items per page" (bottom right) ---------- */
-.per-page-text {
+/* ---------- 5a. "1-10 of 194 items" (bottom left) ---------- */
+.range-text {
   font-family: "Poppins", sans-serif;
-  white-space: nowrap;
   font-size: 13px;
   font-weight: 400;
   color: #101828;
@@ -259,80 +414,159 @@
 }
 
 
-/* ---------- 5b. the bottom-right group ----------
-   margin-left:auto pushes it right; margin-right lines it up with
-   the buttons above (same 32px). */
+/* ---------- 5b. the dropdown + its label ---------- */
 .per-page {
   display: flex;
   align-items: center;
-  gap: 8px;
-  margin-left: auto;
-  margin-right: 32px;
+  gap: 8px;      /* space between the dropdown and the words */
 }
 
 
-/* ---------- 6. the message when a request fails ---------- */
-.load-error {
-  margin: 0 32px;
+/* ---------- 5b. "Items per page" (bottom right) ---------- */
+.per-page-text {
   font-family: "Poppins", sans-serif;
   font-size: 13px;
+  font-weight: 400;
+  color: #101828;
+  line-height: 20px;
+  white-space: nowrap;     /* keeps "Items per page" on ONE line */
+}
+
+
+/* ---------- 6. the Create New dialog ----------
+   Two boxes per row. .wide makes one span both columns. */
+.form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+}
+
+.wide { grid-column: 1 / -1; }   /* Title and the error line */
+
+/* one label + one box, stacked.
+   min-width:0 stops an <input> from pushing its column wider
+   than half the dialog. */
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.field label {
+  font-family: "Poppins", sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  color: #344054;
+}
+
+/* the red star on the Title label */
+.req { color: #D92D20; }
+
+.field-input {
+  width: 100%;
+  height: 40px;
+  padding: 0 12px;
+  font-family: "Poppins", sans-serif;
+  font-size: 13px;
+  color: #101828;
+  background: none;
+  border: 1px solid #D0D5DD;
+  border-radius: 6px;
+  outline: none;
+}
+
+.field-input::placeholder { color: #B0B4BC; }
+
+/* purple border on the box you are typing in — same idea as
+   .search-input:focus above */
+.field-input:focus { border-color: #6166CF; }
+
+/* the red line under the boxes when something is wrong */
+.form-error {
+  margin: 0;
+  font-family: "Poppins", sans-serif;
+  font-size: 12px;
   color: #B42318;
 }
-/* text | paginator | dropdown.*/
-   
-.bottom-bar {
-  display: flex;
-  align-items: center;
-  margin: 0 32px;
-}
 
-.range-text { 
-  flex: 1;
- }                 /* left  text */
-
-.per-page {
-  flex: 1;                               /* right — takes the other half */
-  justify-content: flex-end;             
-}
-
-.menu-toggle {
-  display: none;
-  flex-direction: column;
-  justify-content: center;
-  gap: 3px;
-  width: 30px;
-  height: 30px;
-  background: none;
-  border: 1px solid #D9DBF1;
+/* the two buttons at the bottom of the dialog */
+.dialog-btn {
+  height: 38px;
+  padding: 0 20px;
+  font-family: "Poppins", sans-serif;
+  font-size: 13px;
+  font-weight: 500;
   border-radius: 6px;
   cursor: pointer;
 }
 
-.menu-toggle span {
-  display: block;
-  width: 100%;
-  height: 2px;
-  background:#6166CF ;
-  border-radius: 2px;
+.cancel-btn {
+  color: #414141;
+  background: none;
+  border: 1px solid #D0D5DD;
 }
+.cancel-btn:hover { background: #F4F4FB; border-color: #6166CF; }
+
+/* the question line inside the "are you sure?" window */
+.ask-text {
+  margin: 0;
+  font-family: "Poppins", sans-serif;
+  font-size: 13px;
+  color: #414141;
+  line-height: 20px;
+}
+
+/* the red Delete button — red because it destroys something */
+.del-btn {
+  color: #FFFFFF;
+  background: #D92D20;
+  border: 1px solid #D92D20;
+}
+.del-btn:hover { background: #B42318; }
+
+.save-btn {
+  color: #FFFFFF;
+  background: #6166CF;
+  border: 1px solid #6166CF;
+}
+.save-btn:hover { background: #5A5FBE; }
+
+
 /* =========================================================
    SECTION C — SMALL SCREENS
    ========================================================= */
 
 @media (max-width: 768px) {
 
+  /* the 3-line button appears, on the right of the heading.
+     margin-top pushes it down so it lines up with the BIG title
+     instead of the middle of the two title lines. */
+  .menu-toggle { display: flex; }
+
   .top-bar { flex-wrap: wrap; row-gap: 12px; }
 
   .search-box { margin-left: 20px; }
-   
-.menu-toggle { display: flex;}
+
   .right-buttons {
     width: 100%;
     margin-left: 0;
-  
+    margin-right: 20px;
     justify-content: flex-end;
   }
 
-  .bottom-bar { flex-wrap: wrap; row-gap: 12px; }
-  .per-page   { margin-right: 20px; }
+  /* the three parts wrap onto their own lines and centre.
+     flex:none drops the "take half the slack" rule, so nothing
+     is stretched once they are stacked. */
+  .bottom-bar {
+    flex-wrap: wrap;
+    justify-content: center;
+    row-gap: 12px;
+    margin: 0 20px;
+  }
+  .range-text { flex: none; }
+  .per-page   { flex: none; }
+
+  /* the dialog form drops to one box per row */
+  .form { grid-template-columns: 1fr; }
 }
